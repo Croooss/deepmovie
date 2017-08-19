@@ -21,7 +21,7 @@ func NewFilter(data *data.MovieData) *Filter{
 
 func (filter *Filter) Run(userID string, count int, callBack chan<- []string) {
 	movieChan := make(chan []string)
-	userChan := make(chan []string)
+//	userChan := make(chan []string)
 
 	go filter.MovieFilter.Run(userID, movieChan)
 
@@ -29,20 +29,21 @@ func (filter *Filter) Run(userID string, count int, callBack chan<- []string) {
 	var userRecomms  []string
 	for {
 		select {
-		case movies, ok := <- userChan:
-			if !ok {
-				userChan = nil
-			} else {
-				userRecomms = movies
-			}
+		//case movies, ok := <- userChan:
+		//	if !ok {
+		//		userChan = nil
+		//	} else {
+		//		userRecomms = movies
+		//	}
 		case movies, ok := <- movieChan:
 			if !ok {
 				movieChan = nil
 			} else {
 				movieRecomms = movies
+				movieChan = nil
 			}
 		}
-		if userChan == nil && movieChan == nil {
+		if movieChan == nil {
 			break
 		}
 	}
@@ -58,7 +59,7 @@ func (filter *Filter) Remix(userRecomms []string, movieRecomms []string, count i
 	log.Debug("基于用户的推荐数：%d", len(userRecomms))
 	log.Debug("基于电影的推荐数：%d", len(movieRecomms))
 
-	var result []string = make([]string, count)
+	var result []string = make([]string, 0)
 	u_count := len(userRecomms)
 	m_count := len(movieRecomms)
 	if u_count == 0 {

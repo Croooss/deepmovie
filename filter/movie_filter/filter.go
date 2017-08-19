@@ -1,6 +1,10 @@
 package movie_filter
 
-import "deepmovie/data"
+import (
+	"deepmovie/data"
+	"time"
+	log "github.com/cihub/seelog"
+)
 
 type Filter struct {
 	Rates map[string]*data.MovieItem
@@ -18,6 +22,7 @@ func NewMovieFilter(mdat *data.MovieData) *Filter {
 
 	//TODO
 	//效率可能很低
+	log.Debugf("movie_filter init start : %s", time.Now().String())
 	for _, vals := range mdat.Ratings {
 		for _, val := range vals {
 			if item := mdat.Movies[val.MovieID]; item != nil {
@@ -42,11 +47,18 @@ func NewMovieFilter(mdat *data.MovieData) *Filter {
 		}
 	}
 
+	log.Debugf("movie_filter init finish : %s", time.Now().String())
+
 	return filter
 }
 
 func (filter *Filter) Run(userid string, callBack chan<- []string) {
-	//TODO
+	var count int = 10
+	result := make([]string, 0)
+
+	//todo
+
+	callBack <- result
 }
 
 func (filter *Filter) GetRandomMovie(count int) []string {

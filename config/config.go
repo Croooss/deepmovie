@@ -18,9 +18,9 @@ type DataFile struct {
 
 
 type AppConfig struct {
-	Files *DataFile
 	UserID string
 	Count int
+	Files *DataFile
 }
 
 func init() {
@@ -41,7 +41,7 @@ func logInit() {
 func LoadCurDir() string {
 	path, err := exec.LookPath(os.Args[0])
 	if err != nil {
-		log.Errorf("application path error:%v \n", err)
+		log.Errorf("application path error : %v", err)
 		os.Exit(1)
 	}
 

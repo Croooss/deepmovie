@@ -66,10 +66,10 @@ func LoadData(files *config.DataFile) *MovieData {
 
 
 func (data *MovieData) loadMovieInfo(fileName string, readChan chan<- int){
-	log.Debugf("start load file: %s \n", fileName)
+	log.Debugf("start load file: %s", fileName)
 	dats, err := readDataFile(fileName)
 	if err != nil {
-		log.Error("invalid csv file (%s) \n", fileName)
+		log.Error("invalid csv file : %s", fileName)
 		os.Exit(1)
 	}
 
@@ -82,10 +82,10 @@ func (data *MovieData) loadMovieInfo(fileName string, readChan chan<- int){
 }
 
 func (data *MovieData) loadMovieTag(fileName string, readChan chan<- int) {
-	log.Debugf("start load file: %s \n", fileName)
+	log.Debugf("start load file: %s", fileName)
 	dats, err := readDataFile(fileName)
 	if err != nil {
-		log.Error("invalid csv file(%s)\n", fileName)
+		log.Error("invalid csv file : %s", fileName)
 		os.Exit(1)
 	}
 
@@ -98,10 +98,10 @@ func (data *MovieData) loadMovieTag(fileName string, readChan chan<- int) {
 }
 
 func (data *MovieData) loadMovieRating(fileName string, readChan chan<- int) {
-	log.Debugf("start load file: %s \n", fileName)
+	log.Debugf("start load file: %s", fileName)
 	dats, err := readDataFile(fileName)
 	if err != nil {
-		log.Error("invalid csv file(%s)\n", fileName)
+		log.Error("invalid csv file :%s ", fileName)
 		os.Exit(1)
 	}
 

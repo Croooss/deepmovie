@@ -47,12 +47,13 @@ func (app *Application) Run() {
 				result = nil
 			} else {
 				if len(ret) != app.config.Count {
-					log.Debug("not enough movies recommended\n")
+					log.Debug("not enough movies recommended")
 				}
 
 				for _, val := range ret {
-					log.Debug("recommending user(%s) movie: %s\n", app.config.UserID, val)
+					log.Debugf("recommending user(%s) movie: %s", app.config.UserID, val)
 				}
+				result = nil
 			}
 		}
 		if result == nil {
