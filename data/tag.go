@@ -1,6 +1,6 @@
 package data
 
-type MovieTag struct {
+type BaseMovieTag struct {
 	UserID string
 	MovieID string
 	Tag  string
@@ -9,12 +9,12 @@ type MovieTag struct {
 	//timestamp int64
 }
 
-func DecodeMovieTag(vals []string) *MovieTag{
-	tag := new(MovieTag)
-
+func DecodeMovieTag(vals []string) *BaseMovieTag{
 	if len(vals) < 3 {
 		return nil
 	}
+
+	tag := new(BaseMovieTag)
 
 	tag.UserID = vals[0]
 	tag.MovieID = vals[1]

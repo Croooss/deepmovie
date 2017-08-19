@@ -4,7 +4,7 @@ import (
 	"os"
 	"encoding/csv"
 	log "github.com/cihub/seelog"
-	"deeplearning/config"
+	"deepmovie/config"
 )
 
 const (
@@ -14,9 +14,9 @@ const (
 )
 
 type MovieData struct {
-	Movies []*MovieInfo
-	Ratings map[string][]*MovieRating
-	Tags  map[string][]*MovieTag
+	Movies map[string]*MovieItem
+	Ratings map[string][]*BaseMovieRating
+	Tags  map[string][]*BaseMovieTag
 }
 
 func LoadData(files *config.DataFile) *MovieData {
@@ -27,9 +27,9 @@ func LoadData(files *config.DataFile) *MovieData {
 
 	log.Debug("start load data")
 	movieData := new(MovieData)
-	movieData.Movies = make([]*MovieInfo, 0)
-	movieData.Ratings = make(map[string][]*MovieRating)
-	movieData.Tags = make(map[string][]*MovieTag)
+	movieData.Movies = make(map[string]*MovieItem)
+	movieData.Ratings = make(map[string][]*BaseMovieRating)
+	movieData.Tags = make(map[string][]*BaseMovieTag)
 
 	go movieData.loadMovieTag(files.Tag, loadChan)
 	go movieData.loadMovieInfo(files.Movie, loadChan)
@@ -74,8 +74,8 @@ func (data *MovieData) loadMovieInfo(fileName string, readChan chan<- int){
 	}
 
 	for _, vals := range dats {
-		info := DecodeMovieInfo(vals)
-		data.Movies = append(data.Movies, info)
+		item := DecodeMovieInfo(vals)
+		data.Movies[item.BaseMovieInfo.ID] = item
 	}
 
 	readChan <- FinishLoadMovie

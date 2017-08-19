@@ -2,7 +2,7 @@ package data
 
 import "strconv"
 
-type MovieRating struct {
+type BaseMovieRating struct {
 	UserID string
 	MovieID string
 	Rating float32
@@ -11,13 +11,16 @@ type MovieRating struct {
 	//timestamp int64
 }
 
+type RatingData struct {
 
-func DecodeMovieRating(vals []string) *MovieRating {
+}
+
+func DecodeMovieRating(vals []string) *BaseMovieRating {
 	if len(vals) < 3 {
 		return nil
 	}
 
-	rate := new(MovieRating)
+	rate := new(BaseMovieRating)
 	rate.UserID = vals[0]
 	rate.MovieID = vals[1]
 	if val, err := strconv.ParseFloat(vals[2], 32); err != nil {
@@ -28,3 +31,4 @@ func DecodeMovieRating(vals []string) *MovieRating {
 
 	return rate
 }
+

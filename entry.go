@@ -1,15 +1,16 @@
-package deeplearning
-
+package deepmovie
 import (
 	"os"
 	log "github.com/cihub/seelog"
-	"deeplearning/data"
-	"deeplearning/config"
+	"deepmovie/data"
+	"deepmovie/config"
+	"deepmovie/filter"
 )
 
 type Application struct {
 	config  *config.AppConfig
 	MovieData *data.MovieData
+	filter  *filter.Filter
 }
 
 func ServerStart() {
@@ -21,7 +22,6 @@ func ServerStart() {
 		os.Exit(1)
 	}
 	app.config = conf
-
 	app.Run()
 
 	defer log.Flush()
@@ -35,5 +35,32 @@ func (app *Application) Run() {
 	}
 
 	app.MovieData = data
+	app.filter = filter.NewFilter(app.MovieData)
+
+	result := make(chan []string)
+	go app.filter.Run(app.config.UserID, app.config.Count, result)
+
+	for {
+		select {
+		case ret, ok := <-result:
+			if !ok {
+				result = nil
+			} else {
+				if len(ret) != app.config.Count {
+					log.Debug("not enough movies recommended\n")
+				}
+
+				for _, val := range ret {
+					log.Debug("recommending user(%s) movie: %s\n", app.config.UserID, val)
+				}
+			}
+		}
+		if result == nil {
+			break
+		}
+	}
+
+	log.Debug("recommending end!")
+	log.Flush()
 }
 

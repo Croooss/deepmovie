@@ -16,8 +16,11 @@ type DataFile struct {
 	Tag string
 }
 
+
 type AppConfig struct {
 	Files *DataFile
+	UserID string
+	Count int
 }
 
 func init() {
